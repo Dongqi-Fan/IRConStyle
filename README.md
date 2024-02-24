@@ -4,7 +4,8 @@
 
 ## Visual results
 
-All visual results of the ConStyle models and original models can be found in:
+All visual results of the ConStyle models and original models can be found in: https://pan.baidu.com/s/1ft2XcDr_118ww91n2C_VDA?pwd=xzlq  CODE：xzlq 
+
 
 ## Weight files
 
