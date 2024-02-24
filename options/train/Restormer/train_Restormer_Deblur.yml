@@ -1,0 +1,102 @@
+# TODO
+# general settings
+name: train_RestormerDeblur
+model_type: Origin
+manual_seed: 10
+
+num_gpu: 1
+gpu_id: 0
+
+datasets:
+  train:
+    name: GoPro
+    type: Datasets_Paired
+    dataroot_gt: path for 'GoPro target'
+    dataroot_lq: path for 'GoPro input'
+    filename_tmpl: '{}'
+    pin_memory: True
+    io_backend:
+      type: lmdb
+    
+    scale: 1
+    gt_size: 128
+    use_hflip: True
+    use_rot: True
+    num_worker_per_gpu: 8
+    batch_size_per_gpu: 8
+    dataset_enlarge_ratio: 1
+    prefetch_mode: cuda                     # cuda or cpu
+
+  val:
+    name: GoPro_part
+    type: Datasets_Paired
+    dataroot_gt: path for 'GoPro_part target'
+    dataroot_lq: path for 'GoPro_part input'
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+network_g:
+  type: Restormer
+
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+train:
+  total_iter: 703632
+  warmup_iter: -1
+  ema_decay: 0.999
+
+  optim_g:
+    type: AdamW
+    lr: !!float 3e-4
+    weight_decay: !!float 1e-4
+    betas: [ 0.9, 0.999 ]
+
+  scheduler:
+    type: CosineAnnealingRestartCyclicLR
+    periods: [243312, 460320]
+    restart_weights: [1,1]
+    eta_mins: [0.0003,0.000001]
+
+  mixing_augs:
+    mixup: false
+    mixup_beta: 1.2
+    use_identity: true
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+val:
+  val_freq: !!float 5e3
+  save_img: false
+
+  metrics:
+    psnr_y:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: True
+
+    psnr_rgb:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: False
+
+# logging settings
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: !!float 5e3
+  use_tb_logger: False
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

@@ -1,0 +1,69 @@
+name: test_RestormerDehaze
+suffix: ~
+model_type: Origin
+crop_border: ~
+num_gpu: 1
+gpu_id: 0
+manual_seed: 0
+test: True
+
+datasets:
+  test_1:
+    name: Rain100H
+    type: Dataset_Paired
+    dataroot_gt: /root/autodl-tmp/derain/Part_Rain100H_norain
+    dataroot_lq: /root/autodl-tmp/derain/Part_Rain100H_rain
+    io_backend:
+      type: disk
+      
+#   test_2:
+#     name: Rain100H
+#     type: Dataset_Derain
+#     dataroot_gt: /root/autodl-tmp/derain/Test/Test Rain100H/norain
+#     dataroot_lq: /root/autodl-tmp/derain/Test/Test Rain100H/rain
+#     io_backend:
+#       type: disk
+      
+#   test_3:
+#     name: Rain100L
+#     type: Dataset_Derain
+#     dataroot_gt: /root/autodl-tmp/derain/Test/Test Rain100L/norain
+#     dataroot_lq: /root/autodl-tmp/derain/Test/Test Rain100L/rain
+#     io_backend:
+#       type: disk
+
+network_g:
+  type: Restormer
+
+val:
+  save_img: false
+
+  metrics:
+    psnr_rgb:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: False
+
+    ssim_rgb:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: False
+
+    psnr_y:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: True
+
+    ssim_y:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: True
+
+save_img: false
+
+# path
+path:
+  pretrain_network_g: /root/constyle/experiments/Restormer Derain/models/net_g_185517.pth
+  strict_load_g: true
+
+

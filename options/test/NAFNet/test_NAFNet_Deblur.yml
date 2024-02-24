@@ -1,0 +1,77 @@
+name: test_NAFNetDeblur
+suffix: ~
+model_type: Origin
+crop_border: ~
+num_gpu: 1
+gpu_id: 0
+manual_seed: 0
+test: True
+
+datasets:
+  test_1:
+    name: GoPro
+    type: Dataset_Paired
+    dataroot_gt: path for 'GoPro target'
+    dataroot_lq: path for 'GoPro input'
+    io_backend:
+      type: disk
+
+  test_2:
+    name: RealBlur_R
+    type: Dataset_Paired
+    dataroot_gt: path for 'RealBlur_R target'
+    dataroot_lq: path for 'RealBlur_R input'
+    io_backend:
+      type: disk
+
+  test_3:
+    name: RealBlur_J
+    type: Dataset_Paired
+    dataroot_gt: path for 'RealBlur_J target'
+    dataroot_lq: path for 'RealBlur_J input'
+    io_backend:
+      type: disk
+
+  test_4:
+    name: HIDE
+    type: Dataset_Paired
+    dataroot_gt: path for 'HIDE target'
+    dataroot_lq: path for 'HIDE input'
+    io_backend:
+      type: disk
+
+network_g:
+  type: NAFNet
+
+val:
+  save_img: false
+
+  metrics:
+    psnr_rgb:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: False
+
+    ssim_rgb:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: False
+
+    psnr_y:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: True
+
+    ssim_y:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: True
+
+save_img: false
+
+# path
+path:
+  pretrain_network_g: path for best pth
+  strict_load_g: true
+
+

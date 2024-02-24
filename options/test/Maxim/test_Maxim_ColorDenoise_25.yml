@@ -1,0 +1,77 @@
+name: test_MaximDenoise
+suffix: ~
+model_type: Origin
+crop_border: ~
+num_gpu: 1
+gpu_id: 0
+manual_seed: 0
+test: True
+
+datasets:
+  test_1:
+    name: CBSD68_part
+    type: Dataset_Maxim_GaussianDenoising
+    sigma_test: 25
+    in_ch: 3
+    dataroot_gt: path for 'CBSD68_part'
+    dataroot_lq: none
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_2:
+    name: CBSD68
+    type: Dataset_Maxim_GaussianDenoising
+    sigma_test: 25
+    in_ch: 3
+    dataroot_gt: path for 'CBSD68'
+    dataroot_lq: none
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  test_3:
+    name: urban100
+    type: Dataset_Maxim_GaussianDenoising
+    sigma_test: 25
+    in_ch: 3
+    dataroot_gt: path for 'urban100'
+    dataroot_lq: none
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+network_g:
+  type: Maxim
+
+val:
+  save_img: false
+
+  metrics:
+    psnr_rgb:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: False
+
+    ssim_rgb:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: False
+
+    psnr_y:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: True
+
+    ssim_y:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: True
+
+save_img: false
+
+# path
+path:
+  pretrain_network_g: path for best pth
+  strict_load_g: true
+
