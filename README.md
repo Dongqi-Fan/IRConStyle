@@ -26,7 +26,7 @@ If you have any questions, please contact dongqifan@std.uestc.edu.cn.
 
 ## Citation
 
-If you find our idea and code helpful, please cite our work:
+If you find our idea and code helpful, please cite our work.
 
 
 
