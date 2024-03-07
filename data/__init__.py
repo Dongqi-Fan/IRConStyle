@@ -39,6 +39,9 @@ def build_dataset(dataset_opt):
     elif dataset_type in ['Dataset_Maxim_Dehaze']:
         from data.image_datasets import Dataset_Maxim_Dehaze as D
 
+    elif dataset_type in ['Dataset_Derain']:
+        from data.image_datasets import Dataset_Derain as D
+
     else:
         raise NotImplementedError('Dataset [{:s}] is not found.'.format(dataset_type))
 
